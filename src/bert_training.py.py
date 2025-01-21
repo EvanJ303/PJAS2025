@@ -1,11 +1,8 @@
 from transformers import BertForSequenceClassification, GPT2Model, GPT2Tokenizer, Trainer, TrainingArguments
 from datasets import load_dataset
+import bert
 
-class bert_encoder(BertForSequenceClassification):
-    def forward(self, input_embeds, **kwargs):
-        return super().forward(inputs_embeds=input_embeds, **kwargs)
-
-bert = bert_encoder.from_pretrained('bert-base-uncased', num_labels=2)
+bert = bert.bert_encoder.from_pretrained('bert-base-uncased', num_labels=2)
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 gpt = GPT2Model.from_pretrained('gpt2')
 gpt_embedder = gpt.get_input_embeddings()
