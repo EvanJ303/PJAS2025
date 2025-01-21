@@ -1,9 +1,4 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from transformers import pipeline, GPT2Model
+from transformers import GPT2LMHeadModel, GPT2Tokenizer, Trainer, TrainingArguments
 
-gpt = GPT2Model.from_pretrained('gpt2')
-
-class gptPipeline(pipeline):
-    
+gpt = GPT2LMHeadModel.from_pretrained('gpt2')
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
