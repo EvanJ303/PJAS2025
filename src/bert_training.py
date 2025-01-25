@@ -12,7 +12,7 @@ tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 tokenizer.pad_token = tokenizer.eos_token
 
 # Function to tokenize the input text
-def tokenize_fn(example):
+def tokenize_function(example):
     # Tokenize the input text without padding
     tokens = tokenizer(example['sentence'], padding=False, truncation=True)
     return {
@@ -25,14 +25,14 @@ def tokenize_fn(example):
 dataset = load_dataset('glue', 'sst2', cache_dir='./data/datasets/sst2')
 
 # Apply the tokenize function to the dataset and remove unnecessary columns
-tokenized_datasets = dataset.map(tokenize_fn, batched=True, remove_columns=['sentence'])
+tokenized_datasets = dataset.map(tokenize_function, batched=False, remove_columns=['sentence'])
 
 # Split the dataset into training and evaluation sets
 train_dataset = tokenized_datasets['train']
 eval_dataset = tokenized_datasets['validation']
 
 # Define a data collator that will dynamically pad the inputs
-data_collator = DataCollatorWithPadding(tokenizer)
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
 # Define training arguments for the Trainer
 training_args = TrainingArguments(
