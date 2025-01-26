@@ -18,7 +18,5 @@ class bert_encoder(BertForSequenceClassification):
         # Transform the input embeddings using the linear layer
         if inputs_embeds is not None:
             inputs_embeds = self.gpt_to_bert(inputs_embeds)
-        # Remove the unexpected 'num_items_in_batch' argument if present
-        kwargs.pop('num_items_in_batch', None)
         # Call the parent class's forward method with the transformed embeddings
         return super().forward(inputs_embeds=inputs_embeds, **kwargs)

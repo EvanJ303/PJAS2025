@@ -14,12 +14,7 @@ tokenizer.pad_token = tokenizer.eos_token
 # Function to tokenize the input text
 def tokenize_function(example):
     # Tokenize the input text without padding
-    tokens = tokenizer(example['sentence'], padding=False, truncation=True)
-    return {
-        'input_ids': tokens['input_ids'],
-        'labels': example['label'],
-        'attention_mask': tokens['attention_mask']
-    }
+    return tokenizer(example['sentence'], padding=False, truncation=True)
 
 # Load the SST-2 dataset from the GLUE benchmark
 dataset = load_dataset('glue', 'sst2', cache_dir='./data/datasets/sst2')
@@ -43,7 +38,7 @@ training_args = TrainingArguments(
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
     weight_decay=0.01,  # Weight decay for optimization
     logging_dir='./logs/bert',  # Directory to save logs
-    evaluation_strategy='epoch'  # Evaluation strategy to use at the end of each epoch
+    eval_strategy='epoch'  # Evaluation strategy to use at the end of each epoch
 )
 
 # Initialize the Trainer with the BERT model, training arguments, datasets, and data collator

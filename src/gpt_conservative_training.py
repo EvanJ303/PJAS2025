@@ -9,26 +9,26 @@ tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 tokenizer.pad_token = tokenizer.eos_token
 
 # Load the political bias dataset
-dataset = load_dataset('cajcodes/political-bias', cache_dir='./data/datasets/political-bias')
+dataset = load_dataset('wwbrannon/twinviews-13k', cache_dir='./data/datasets')
 
-# Filter the dataset to include only conservative examples (label == 0)
-conservative_dataset = dataset['train'].filter(lambda x: x['label'] == 0)
-# Remove the label column as it's no longer needed
-conservative_dataset = conservative_dataset.remove_columns(['label'])
+# Use only the 'train' split and remove unnecessary columns
+dataset = dataset['train']
+dataset = dataset.remove_columns(['l', 'topic'])
+
 # Split the dataset into training and evaluation sets
-conservative_dataset = conservative_dataset.train_test_split(test_size=0.1)
+dataset = dataset.train_test_split(test_size=0.1)
 
 # Separate the training and evaluation datasets
-conservative_train_dataset = conservative_dataset['train']
-conservative_eval_dataset = conservative_dataset['test']
+train_dataset = dataset['train']
+eval_dataset = dataset['test']
 
 # Function to tokenize the input text
 def tokenize_function(example):
-    return tokenizer(example['text'], padding=False, truncation=True)
+    return tokenizer(example['r'], padding=False, truncation=True)
 
-# Apply the tokenize function to the dataset
-tokenized_train_dataset = conservative_train_dataset.map(tokenize_function, batched=False, remove_columns=['text'])
-tokenized_eval_dataset = conservative_eval_dataset.map(tokenize_function, batched=False, remove_columns=['text'])
+# Apply the tokenize function to the datasets
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=False, remove_columns=['r'])
+tokenized_eval_dataset = eval_dataset.map(tokenize_function, batched=False, remove_columns=['r'])
 
 # Define a data collator for language modeling that will dynamically pad the inputs
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -42,7 +42,7 @@ training_args = TrainingArguments(
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
     weight_decay=0.01,  # Weight decay for optimization
     logging_dir='./logs/gpt_conservative',  # Directory to save logs
-    evaluation_strategy='epoch'  # Evaluation strategy to use at the end of each epoch
+    eval_strategy='epoch'  # Evaluation strategy to use at the end of each epoch
 )
 
 # Initialize the Trainer with the GPT-2 model, training arguments, datasets, and data collator
