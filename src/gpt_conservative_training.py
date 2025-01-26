@@ -42,7 +42,8 @@ training_args = TrainingArguments(
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
     weight_decay=0.01,  # Weight decay for optimization
     logging_dir='./logs/gpt_conservative',  # Directory to save logs
-    eval_strategy='epoch'  # Evaluation strategy to use at the end of each epoch
+    eval_strategy='epoch',  # Evaluation strategy to use at the end of each epoch
+    save_strategy='epoch'  # Save strategy to use at the end of each epoch
 )
 
 # Initialize the Trainer with the GPT-2 model, training arguments, datasets, and data collator
