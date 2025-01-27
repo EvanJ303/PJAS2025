@@ -32,7 +32,7 @@ data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 # Define training arguments for the Trainer
 training_args = TrainingArguments(
     output_dir='./models/bert',  # Directory to save the model
-    num_train_epochs=3,  # Number of training epochs
+    num_train_epochs=5,  # Number of training epochs
     per_device_train_batch_size=16,  # Batch size for training
     per_device_eval_batch_size=16,  # Batch size for evaluation
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
@@ -40,7 +40,7 @@ training_args = TrainingArguments(
     logging_dir='./logs/bert',  # Directory to save logs
     eval_strategy='epoch',  # Evaluation strategy to use at the end of each epoch
     save_strategy='epoch',  # Save strategy to use at the end of each epoch
-    learning_rate=5e-5  # Learning rate for the optimizer
+    learning_rate=5e-4  # Learning rate for the optimizer
 )
 
 # Initialize the Trainer with the BERT model, training arguments, datasets, and data collator
