@@ -2,8 +2,8 @@ from transformers import GPT2Tokenizer, Trainer, TrainingArguments, DataCollator
 from datasets import load_dataset
 import bert
 
-# Load pre-trained BERT model for sequence classification
-bert_encoder = bert.bert_encoder.from_pretrained('bert-base-uncased', num_labels=2)
+# Load BERT model for sequence classification
+bert_classifier = bert.bert_classifier()
 
 # Load pre-trained GPT-2 tokenizer
 tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
@@ -32,20 +32,20 @@ data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 # Define training arguments for the Trainer
 training_args = TrainingArguments(
     output_dir='./models/bert',  # Directory to save the model
-    num_train_epochs=5,  # Number of training epochs
-    per_device_train_batch_size=16,  # Batch size for training
-    per_device_eval_batch_size=16,  # Batch size for evaluation
+    num_train_epochs=12,  # Number of training epochs
+    per_device_train_batch_size=20,  # Batch size for training
+    per_device_eval_batch_size=20,  # Batch size for evaluation
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
     weight_decay=0.01,  # Weight decay for optimization
     logging_dir='./logs/bert',  # Directory to save logs
     eval_strategy='epoch',  # Evaluation strategy to use at the end of each epoch
     save_strategy='epoch',  # Save strategy to use at the end of each epoch
-    learning_rate=5e-4  # Learning rate for the optimizer
+    learning_rate=1e-4 # Learning rate for the optimizer
 )
 
 # Initialize the Trainer with the BERT model, training arguments, datasets, and data collator
 trainer = Trainer(
-    model=bert_encoder,
+    model=bert_classifier,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=eval_dataset,

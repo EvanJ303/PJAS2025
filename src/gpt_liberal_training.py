@@ -36,15 +36,15 @@ data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 # Define training arguments for the Trainer
 training_args = TrainingArguments(
     output_dir='./models/gpt_liberal',  # Directory to save the model
-    num_train_epochs=5,  # Number of training epochs
-    per_device_train_batch_size=16,  # Batch size for training
-    per_device_eval_batch_size=16,  # Batch size for evaluation
+    num_train_epochs=7,  # Number of training epochs
+    per_device_train_batch_size=20,  # Batch size for training
+    per_device_eval_batch_size=20,  # Batch size for evaluation
     warmup_steps=500,  # Number of warmup steps for learning rate scheduler
     weight_decay=0.01,  # Weight decay for optimization
     logging_dir='./logs/gpt_liberal',  # Directory to save logs
     eval_strategy='epoch',  # Evaluation strategy to use at the end of each epoch
     save_strategy='epoch',  # Save strategy to use at the end of each epoch
-    learning_rate=5e-4  # Learning rate for the optimizer
+    learning_rate=1e-4  # Learning rate for the optimizer
 )
 
 # Initialize the Trainer with the GPT-2 model, training arguments, datasets, and data collator
