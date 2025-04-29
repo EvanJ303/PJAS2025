@@ -24,10 +24,10 @@ class bert_classifier(nn.Module):
         # If input_ids are provided, convert them to embeddings using GPT-2 embedder
         if input_ids is not None:
             inputs_embeds = self.gpt.get_input_embeddings()(input_ids)
-        # Transform the input embeddings using the linear layers
+        # Transform the input embeddings using the linear layers with ReLU activation
         if inputs_embeds is not None:
-            inputs_embeds = self.gpt_to_bert_1(inputs_embeds)
-            inputs_embeds = self.gpt_to_bert_2(inputs_embeds)
-            inpuys_embeds = self.gpt_to_bert_3(inputs_embeds)
+            inputs_embeds = nn.functional.relu(self.gpt_to_bert_1(inputs_embeds))
+            inputs_embeds = nn.functional.relu(self.gpt_to_bert_2(inputs_embeds))
+            inputs_embeds = nn.functional.relu(self.gpt_to_bert_3(inputs_embeds))
         # Call the BERT model's forward method with the transformed embeddings
         return self.bert(inputs_embeds=inputs_embeds, **kwargs)
